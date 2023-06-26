@@ -1,0 +1,1 @@
+O Projeto fluxo semanal Academia trata-se do meu trabalho Final na Disciplina Fundamentos de Banco de Dados na UFC, cujo seu objetivo trata-se de uma melhor noção e também gerenciamento por parte do setor administrativo de uma academia.
