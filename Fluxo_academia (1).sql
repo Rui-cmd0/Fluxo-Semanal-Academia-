@@ -1,7 +1,11 @@
 Processos de criaçao e atribuição de valores nas tabelas.
 
 Tabela academia 
-create table academia (cod_academia char(6) primary key, horario varchar, dias_funcionamento varchar)
+create table academia
+    (cod_academia char(6) primary key,
+    horario varchar,
+    dias_funcionamento varchar)
+
 Povoamento -
 insert into academia values
 ('777222', '05-22','sg,tr,qr,qn,sx,sb'),
@@ -18,8 +22,14 @@ insert into academia values
 
 Tabela aluno
 create table aluno
-(mat_aluno int primary key, nome varchar(50), sexo char(1), idade int, telefone char(10), cod_academia char (6),
-foreign key (cod_academia) references academia)
+(mat_aluno int primary key,
+ nome varchar(50), 
+ sexo char(1), 
+ idade int,
+ telefone char(10), cod_academia char (6),
+ foreign key (cod_academia) references academia)
+
+
 Povoamento -
 insert into aluno values
 (190, 'Eduardo', 'M', 19, '8893096593','777222'),
@@ -34,8 +44,12 @@ insert into aluno values
 (199, 'Eduarda', 'F', 20, '8876549895','890765');
 
 tabela controle_fluxo
+
 create table controle_fluxo 
-(mat_aluno int primary key, cod_academia char(6), foreign key (cod_academia) references academia)
+(mat_aluno int primary key, 
+cod_academia char(6), 
+foreign key (cod_academia) references academia)
+
 povoamento -
 insert into controle_fluxo values
 (190, '777222'),
@@ -51,7 +65,10 @@ insert into controle_fluxo values
 
 tabela dia_treino
 create table dia_treino 
-(mat_aluno int primary key, cod_academia char(6), dia varchar(50), foreign key (cod_academia) references academia)
+(mat_aluno int primary key, 
+ cod_academia char(6), dia varchar(50),
+ foreign key (cod_academia) references academia)
+
 povoamento -
 insert into dia_treino values
 (190, '777222', 'sg,tr,qr'),
@@ -66,7 +83,12 @@ insert into dia_treino values
 (199, '890765', 'sg,tr,qr,qn,sx,sb')
 
 tabela hora_treino
-create table hora_treino (mat_aluno int primary key, cod_academia char(6), hora char(5), foreign key (cod_academia) references academia)
+
+create table hora_treino 
+(mat_aluno int primary key,
+ cod_academia char(6),
+ hora char(5), foreign key (cod_academia) references academia)
+ 
 povoamento - 
 insert into hora_treino values
 (190, '777222','07:00'),
@@ -113,3 +135,12 @@ from academia ac
 join aluno al ON ac.cod_academia = al.cod_academia
 group by ac.cod_academia
 having count (al.mat_aluno) > 2;
+
+6 - Consulta para saber a média de idade tanto do sexo masculino quanto feminino em uma academia X.
+select ac.cod_academia,
+(select avg(al1.idade) 
+from aluno al1 join academia ac1 on al1.cod_academia = ac1.cod_academia where  sexo = 'M') as media_idade_M,
+(select avg(al2.idade) 
+from aluno al2 join academia ac2 on al2.cod_academia = ac2.cod_academia where  sexo = 'F') as media_idade_F
+from aluno al join academia ac on al.cod_academia = ac.cod_academia
+group by ac.cod_academia;
